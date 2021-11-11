@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { addContact } from '../../redux/phonebook/phonebook-actions';
 import PropTypes, { arrayOf } from 'prop-types';
 import s from './ContactForm.module.css';
+import { fetchTodos } from '../../services/contacts-api';
+
+fetchTodos();
 
 function ContactForm({ contacts, onFormSubmit }) {
   const [name, setName] = useState('');
