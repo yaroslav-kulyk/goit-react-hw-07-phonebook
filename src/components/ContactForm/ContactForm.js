@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
-import { addContact } from '../../redux/phonebook/phonebook-actions';
-import { useGetPokemonByNameQuery } from '../../redux/test';
-import { useFetchContactsQuery } from '../../redux/contactsSlice';
+// import { addContact } from '../../redux/phonebook/phonebook-actions';
+import { useAddContactMutation } from '../../redux/contactsSlice';
 import PropTypes, { arrayOf } from 'prop-types';
 import s from './ContactForm.module.css';
 
 function ContactForm({ contacts, onFormSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  // const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
-  
+  const [addContact] = useAddContactMutation();
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -33,20 +30,22 @@ function ContactForm({ contacts, onFormSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (checkIfContactExists()) {
-      return alert(`${name} already in contacts`);
-    }
+    // if (checkIfContactExists()) {
+    //   return alert(`${name} already in contacts`);
+    // }
 
-    onFormSubmit({ name, number });
+    addContact({ name, number });
+
+    // onFormSubmit({ name, number });
 
     reset();
   };
 
-  const checkIfContactExists = () => {
-    return contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase(),
-    );
-  };
+  // const checkIfContactExists = () => {
+  //   return contacts.find(
+  //     contact => contact.name.toLowerCase() === name.toLowerCase(),
+  //   );
+  // };
 
   const reset = () => {
     setName('');
@@ -88,13 +87,13 @@ function ContactForm({ contacts, onFormSubmit }) {
   );
 }
 
-const mapStateToProps = state => ({
-  contacts: state.contacts.items,
-});
+// const mapStateToProps = state => ({
+//   contacts: state.contacts.items,
+// });
 
-const mapDispatchToProps = dispatch => ({
-  onFormSubmit: contact => dispatch(addContact(contact)),
-});
+// const mapDispatchToProps = dispatch => ({
+//   onFormSubmit: contact => dispatch(addContact(contact)),
+// });
 
 ContactForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
@@ -105,4 +104,4 @@ ContactForm.propTypes = {
   ),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default ContactForm;

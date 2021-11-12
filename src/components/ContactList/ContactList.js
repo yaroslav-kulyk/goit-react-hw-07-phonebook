@@ -6,13 +6,14 @@ import s from './ContactList.module.css';
 
 const ContactList = ({ filter }) => {
   const { data } = useFetchContactsQuery();
+  const normalizedFilter = filter.toLowerCase();
 
   return (
     <>
       {data && (
         <ul className={s.contactList}>
           {data
-            .filter(contact => contact.name.toLowerCase().includes(filter))
+            .filter(({ name }) => name.toLowerCase().includes(normalizedFilter))
             .map(({ id, name, phone }) => {
               return (
                 <li key={id}>
@@ -29,16 +30,6 @@ const ContactList = ({ filter }) => {
 const mapStateToProps = state => ({
   filter: state.contacts.filter,
 });
-// const { filter, items } = state.contacts;
-
-// const normalizedFilter = filter.toLowerCase();
-// const visibleContacts = items.filter(contact =>
-//   contact.name.toLowerCase().includes(normalizedFilter),
-// );
-
-// return {
-//   contacts: visibleContacts,
-// };
 
 ContactList.propTypes = {
   filter: PropTypes.string,
