@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import { addContact } from '../../redux/phonebook/phonebook-actions';
+import { useGetPokemonByNameQuery } from '../../redux/test';
+import { useFetchContactsQuery } from '../../redux/contactsSlice';
 import PropTypes, { arrayOf } from 'prop-types';
 import s from './ContactForm.module.css';
-import { fetchTodos } from '../../services/contacts-api';
-
-fetchTodos();
 
 function ContactForm({ contacts, onFormSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  // const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
+  
 
   const handleChange = event => {
     const { name, value } = event.target;

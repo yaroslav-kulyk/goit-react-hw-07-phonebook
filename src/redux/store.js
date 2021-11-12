@@ -1,36 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import phonebookReducer from './phonebook/phonebook-reducer';
 
-const contactsPersistConfig = {
-  key: 'contacts',
-  storage,
-  whitelist: ['items'],
-};
+import phonebookReducer from './phonebook/phonebook-reducer';
+import { pokemonApi } from './test';
+import { contactsApi } from './contactsSlice';
 
 const store = configureStore({
   reducer: {
-    contacts: persistReducer(contactsPersistConfig, phonebookReducer),
+    contacts: phonebookReducer,
+    [pokemonApi.reducerPath]: pokemonApi.reducer,
+    [contactsApi.reducerPath]: contactsApi.reducer,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware(),
+    pokemonApi.middleware,
+    contactsApi.middleware,
+  ],
+
   devTools: process.env.NODE_ENV === 'development',
 });
-
-export const persistor = persistStore(store);
 
 export default store;

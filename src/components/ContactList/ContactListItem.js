@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import s from './ContactListItem.module.css';
 
-const ContactListItem = ({ name, number, onContactDelete }) => {
+const ContactListItem = ({ name, number, onContactDelete, deleteContact }) => {
   return (
     <div className={s.item}>
       {name}: {number}
