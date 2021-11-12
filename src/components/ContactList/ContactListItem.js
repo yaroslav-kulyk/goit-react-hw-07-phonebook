@@ -1,11 +1,14 @@
+import { useDeleteContactMutation } from '../../redux/contactsSlice';
 import PropTypes from 'prop-types';
 import s from './ContactListItem.module.css';
 
-const ContactListItem = ({ name, number, onContactDelete, deleteContact }) => {
+const ContactListItem = ({ id, name, phone }) => {
+  const [deleteContact] = useDeleteContactMutation();
+
   return (
     <div className={s.item}>
-      {name}: {number}
-      <button type="button" onClick={onContactDelete}>
+      {name}: {phone}
+      <button type="button" onClick={() => deleteContact(id)}>
         Delete
       </button>
     </div>
@@ -14,8 +17,7 @@ const ContactListItem = ({ name, number, onContactDelete, deleteContact }) => {
 
 ContactListItem.propTypes = {
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  onContactDelete: PropTypes.func,
+  phone: PropTypes.string.isRequired,
 };
 
 export default ContactListItem;
