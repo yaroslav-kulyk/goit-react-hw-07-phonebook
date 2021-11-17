@@ -1,19 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import phonebookReducer from './phonebook/phonebook-reducer';
-import { pokemonApi } from './test';
+import filterReducer from './phonebook/phonebook-reducer';
 import { contactsApi } from './contactsSlice';
 
 const store = configureStore({
   reducer: {
-    contacts: phonebookReducer,
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
+    contacts: filterReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
   },
 
   middleware: getDefaultMiddleware => [
     ...getDefaultMiddleware(),
-    pokemonApi.middleware,
     contactsApi.middleware,
   ],
 

@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
-// import { addContact } from '../../redux/phonebook/phonebook-actions';
+import { useFetchContactsQuery } from '../../redux/contactsSlice';
 import { useAddContactMutation } from '../../redux/contactsSlice';
-import PropTypes, { arrayOf } from 'prop-types';
 import s from './ContactForm.module.css';
 
-function ContactForm({ contacts, onFormSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [addContact] = useAddContactMutation();
+  const { data } = useFetchContactsQuery();
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -30,22 +29,18 @@ function ContactForm({ contacts, onFormSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    // if (checkIfContactExists()) {
-    //   return alert(`${name} already in contacts`);
-    // }
+    if (
+      data.filter(contact =>
+        contact.name.toLowerCase().includes(name.toLowerCase()),
+      ).length > 0
+    ) {
+      return alert(`${name} already in contacts`);
+    }
 
     addContact({ name, number });
 
-    // onFormSubmit({ name, number });
-
     reset();
   };
-
-  // const checkIfContactExists = () => {
-  //   return contacts.find(
-  //     contact => contact.name.toLowerCase() === name.toLowerCase(),
-  //   );
-  // };
 
   const reset = () => {
     setName('');
@@ -86,22 +81,5 @@ function ContactForm({ contacts, onFormSubmit }) {
     </form>
   );
 }
-
-// const mapStateToProps = state => ({
-//   contacts: state.contacts.items,
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   onFormSubmit: contact => dispatch(addContact(contact)),
-// });
-
-ContactForm.propTypes = {
-  onFormSubmit: PropTypes.func.isRequired,
-  contacts: arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  ),
-};
 
 export default ContactForm;
